@@ -6,7 +6,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
     {
         public string BaseTypeName { get; set; }
 
-        public string OutputFile { get; set; }
+        public string LogFile { get; set; }
         /*public String OutputFile { get; set; }
         public List<String> OutputFiles { get; set; }*/
         

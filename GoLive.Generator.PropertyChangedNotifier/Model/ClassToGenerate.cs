@@ -11,7 +11,7 @@ namespace GoLive.Generator.PropertyChangedNotifier.Model
 
         public string Name { get; set; }
         public List<MemberToGenerate> Members { get; set; }
-
+        public string Filename { get; set; }
         public string Namespace { get; set; }
     }
 }

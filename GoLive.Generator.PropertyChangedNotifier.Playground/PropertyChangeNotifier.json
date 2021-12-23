@@ -1,3 +1,4 @@
 ﻿{
-  "BaseTypeName": "GoLive.Generator.ProperyChangedNotifier.Playground.Entity"
+  "BaseTypeName": "GoLive.Generator.ProperyChangedNotifier.Playground.Entity",
+  "LogFile": "PropertyChangeNotifier.txt"
 }

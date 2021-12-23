@@ -19,7 +19,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
 
             try
             {
-                var source = new SourceStringBuilder();
+              //  var source = new SourceStringBuilder();
                 var compilation = context.Compilation;
 
                 var controllerRoutes = compilation.SyntaxTrees.Select(t => compilation.GetSemanticModel(t))
@@ -27,16 +27,26 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     .SelectMany(c => c)
                     .ToArray();
 
-                SourceCodeGenerator.Generate(source, config, context, controllerRoutes);
+                foreach (var classToGenerate in controllerRoutes)
+                {
+                    var sourceStringBuilder = new SourceStringBuilder();
+                    SourceCodeGenerator.Generate(sourceStringBuilder, config, context, classToGenerate);
+                    if (sourceStringBuilder.ToString() is {Length: > 0} s)
+                    {
+                        File.WriteAllText(classToGenerate.Filename.Replace(".cs", ".generated.cs"), s);
+                    }
+                }
+                
+                /*SourceCodeGenerator.Generate(source, config, context, controllerRoutes);
 
                 if (source.ToString() is {Length: > 0} s)
                 {
-                    File.WriteAllText(config.OutputFile, s);
-                }
+                    //File.WriteAllText(config.OutputFile, s);
+                }*/
             }
             catch (Exception e)
             {
-                File.WriteAllText(config.OutputFile, e.ToString());
+                File.WriteAllText(config.LogFile, e.ToString());
             }
         }
 
@@ -53,15 +63,10 @@ namespace GoLive.Generator.PropertyChangedNotifier
             var jsonString = File.ReadAllText(configFilePath.Path);
             var config = JsonSerializer.Deserialize<Settings>(jsonString);
             var configFileDirectory = Path.GetDirectoryName(configFilePath.Path);
-            config.OutputFile = Path.Combine(configFileDirectory, "output-generated.cs");
+            //config.OutputFile = Path.Combine(configFileDirectory, "output-generated.txt");
 
-            /*var fullPath = Path.Combine(configFileDirectory, config.OutputFile);
-            config.OutputFile = Path.GetFullPath(fullPath);
-
-            if (config.OutputFiles != null && config.OutputFiles.Count > 0)
-            {
-                config.OutputFiles = config.OutputFiles.Select(e => Path.GetFullPath(Path.Combine(configFileDirectory, e))).ToList();
-            }*/
+            var fullPath = Path.Combine(configFileDirectory, config.LogFile);
+            config.LogFile = Path.GetFullPath(fullPath);
 
             return config;
         }

@@ -24,17 +24,25 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 if (semantic.GetDeclaredSymbol(node) is INamedTypeSymbol classSymbol &&
                     InheritsFrom(classSymbol, controllerBase))
                 {
-                    yield return GenerateClassDefinition(classSymbol);
+                    var syntaxTreeFilePath = node.SyntaxTree.FilePath;
+                    
+                    if (syntaxTreeFilePath.EndsWith(".generated.cs"))
+                    {
+                        continue;
+                    }
+                    
+                    yield return GenerateClassDefinition(syntaxTreeFilePath, classSymbol);
                 }
             }
         }
 
-        public static ClassToGenerate GenerateClassDefinition(INamedTypeSymbol classSymbol)
+        public static ClassToGenerate GenerateClassDefinition(string syntaxTreeFilePath, INamedTypeSymbol classSymbol)
         {
             ClassToGenerate gen = new ClassToGenerate();
 
             gen.Name = classSymbol.Name;
             gen.Namespace = classSymbol.ContainingNamespace.ToDisplayString();
+            gen.Filename = syntaxTreeFilePath;
             
             foreach (var member in classSymbol.GetMembers())
             {
