@@ -20,12 +20,23 @@ namespace GoLive.Generator.PropertyChangedNotifier
             source.AppendLine($"public partial class {controllerRoutes.Name} {{");
             source.AppendIndent();
             
-            source.AppendLine("public event PropertyChangedEventHandler? PropertyChanged;\n\nprotected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));\n\nprotected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = \"\")\n{\n    if (EqualityComparer<T>.Default.Equals(field, value)) return false;\n    field = value;\n    OnPropertyChanged(propertyName);\n    return true;\n}");
+            source.AppendLine(@"public event PropertyChangedEventHandler? PropertyChanged;
+
+protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = """")
+{
+    if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+    field = value;
+    OnPropertyChanged(propertyName);
+    Changes.Add(propertyName,value);
+    return true;
+}");
             
             foreach (var memberToGenerates in controllerRoutes.Members.GroupBy(e=>e.Name.Substring(4)))
             {
                 var item = memberToGenerates.FirstOrDefault();
-                var itemName = item.Name;//.Substring(4);
+                var itemName = item.Name;
                 source.AppendLine($"public {item.Type} {itemName.FirstCharToUpper()}");
                 source.AppendOpenCurlyBracketLine();
                 source.AppendLine($"get => {itemName};");

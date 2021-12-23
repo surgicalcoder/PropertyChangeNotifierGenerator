@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground
 {
-    public partial class MainItem
+    public partial class SecondItem
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -17,8 +17,8 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
             return true;
         }
 
-        public string Name { get => name; set => SetField(ref name, value); }
+        public string Item1 { get => item1; set => SetField(ref item1, value); }
 
-        public string Description { get => description; set => SetField(ref description, value); }
+        public System.Collections.Generic.List<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
     }
 }
