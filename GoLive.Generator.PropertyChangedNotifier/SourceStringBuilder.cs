@@ -7,10 +7,10 @@ namespace GoLive.Generator.PropertyChangedNotifier
 {
     public class SourceStringBuilder
     {
-        private readonly string SingleIndent = new string(' ', 4);
-
-        public int IndentLevel = 0;
         private readonly StringBuilder _stringBuilder;
+        private readonly string SingleIndent = new(' ', 4);
+
+        public int IndentLevel;
 
         public SourceStringBuilder()
         {
@@ -41,20 +41,14 @@ namespace GoLive.Generator.PropertyChangedNotifier
 
         public void Append(string text, bool indent = true)
         {
-            if (indent)
-            {
-                AppendIndent();
-            }
+            if (indent) AppendIndent();
 
             _stringBuilder.Append(text);
         }
 
         public void AppendIndent()
         {
-            for (int i = 0; i < IndentLevel; i++)
-            {
-                _stringBuilder.Append(SingleIndent);
-            }
+            for (var i = 0; i < IndentLevel; i++) _stringBuilder.Append(SingleIndent);
         }
 
         public void AppendLine()
@@ -71,8 +65,9 @@ namespace GoLive.Generator.PropertyChangedNotifier
         public override string ToString()
         {
             var text = _stringBuilder.ToString();
-            return string.IsNullOrWhiteSpace(text) ? String.Empty : CSharpSyntaxTree.ParseText(text).GetRoot().NormalizeWhitespace().SyntaxTree.GetText().ToString();
+            return string.IsNullOrWhiteSpace(text)
+                ? string.Empty
+                : CSharpSyntaxTree.ParseText(text).GetRoot().NormalizeWhitespace().SyntaxTree.GetText().ToString();
         }
-        
     }
 }

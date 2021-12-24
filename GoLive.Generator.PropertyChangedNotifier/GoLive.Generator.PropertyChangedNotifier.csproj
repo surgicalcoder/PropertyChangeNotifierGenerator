@@ -29,5 +29,9 @@
             <PackagePath>\</PackagePath>
         </None>-->
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Resources\AdditionalFiles.cs" />
+      <EmbeddedResource Include="Resources\AdditionalFiles.cs" />
+    </ItemGroup>
     
 </Project>

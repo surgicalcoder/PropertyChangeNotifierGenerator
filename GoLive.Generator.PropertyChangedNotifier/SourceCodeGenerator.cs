@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GoLive.Generator.PropertyChangedNotifier.Model;
+﻿using GoLive.Generator.PropertyChangedNotifier.Model;
 using Microsoft.CodeAnalysis;
 
 namespace GoLive.Generator.PropertyChangedNotifier
@@ -11,15 +10,15 @@ namespace GoLive.Generator.PropertyChangedNotifier
         {
             source.AppendLine("using System.ComponentModel;");
             source.AppendLine("using System.Runtime.CompilerServices;");
-            
-            
+            source.AppendLine("using GoLive.Generator.PropertyChangedNotifier.Utilities;");
+
             source.AppendLine($"namespace {controllerRoutes.Namespace}");
             source.AppendOpenCurlyBracketLine();
             source.AppendIndent();
-            
-            source.AppendLine($"public partial class {controllerRoutes.Name} {{");
+
+            source.AppendLine($"public partial class {controllerRoutes.Name} : INotifyPropertyChanged {{");
             source.AppendIndent();
-            
+
             source.AppendLine(@"public event PropertyChangedEventHandler? PropertyChanged;
 
 protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -32,29 +31,37 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
     Changes.Add(propertyName,value);
     return true;
 }");
-            
-            foreach (var memberToGenerates in controllerRoutes.Members.GroupBy(e=>e.Name.Substring(4)))
-            {
-                var item = memberToGenerates.FirstOrDefault();
-                var itemName = item.Name;
-                source.AppendLine($"public {item.Type} {itemName.FirstCharToUpper()}");
-                source.AppendOpenCurlyBracketLine();
-                source.AppendLine($"get => {itemName};");
-                source.AppendLine($"set => SetField(ref {itemName}, value);");
 
-                source.AppendCloseCurlyBracketLine();
-            }
-            
-            foreach (var memberToGenerate in controllerRoutes.Members)
-            {
-             //   source.AppendLine($"{memberToGenerate.Name} :: {memberToGenerate.Type}");
-            }
+            foreach (var member in controllerRoutes.Members)
+                if (member.IsCollection)
+                    GenerateCollectionMember(source, member);
+                else
+                    GenerateNormalMember(source, member);
+
             source.AppendLine("}");
-            
+
             source.DecreaseIndent();
             source.AppendCloseCurlyBracketLine();
-        
-        
+        }
+
+        private static void GenerateCollectionMember(SourceStringBuilder source, MemberToGenerate item)
+        {
+            var itemName = item.Name;
+            source.AppendLine($"public FullyObservableCollection<{item.CollectionType}> {itemName.FirstCharToUpper()}");
+            source.AppendOpenCurlyBracketLine();
+            source.AppendLine($"get => {itemName};");
+            source.AppendLine($"set => SetField(ref {itemName}, value);");
+            source.AppendCloseCurlyBracketLine();
+        }
+
+        private static void GenerateNormalMember(SourceStringBuilder source, MemberToGenerate item)
+        {
+            var itemName = item.Name;
+            source.AppendLine($"public {item.Type} {itemName.FirstCharToUpper()}");
+            source.AppendOpenCurlyBracketLine();
+            source.AppendLine($"get => {itemName};");
+            source.AppendLine($"set => SetField(ref {itemName}, value);");
+            source.AppendCloseCurlyBracketLine();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿{
   "BaseTypeName": "GoLive.Generator.ProperyChangedNotifier.Playground.Entity",
-  "LogFile": "PropertyChangeNotifier.txt"
+  "LogFile": "PropertyChangeNotifier.txt",
+  "AdditionalFilesLocation": "AdditionalFiles.cs"
 }

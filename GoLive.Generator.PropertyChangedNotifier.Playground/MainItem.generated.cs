@@ -1,9 +1,10 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using GoLive.Generator.PropertyChangedNotifier.Utilities;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground
 {
-    public partial class MainItem
+    public partial class MainItem : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

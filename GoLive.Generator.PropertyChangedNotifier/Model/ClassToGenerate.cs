@@ -6,7 +6,7 @@ namespace GoLive.Generator.PropertyChangedNotifier.Model
     {
         public ClassToGenerate()
         {
-            Members = new();
+            Members = new List<MemberToGenerate>();
         }
 
         public string Name { get; set; }
