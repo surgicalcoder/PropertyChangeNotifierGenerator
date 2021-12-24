@@ -1,0 +1,7 @@
+System.ArgumentOutOfRangeException: startIndex cannot be larger than length of string. (Parameter 'startIndex')
+   at System.String.Substring(Int32 startIndex, Int32 length)
+   at GoLive.Generator.PropertyChangedNotifier.SourceCodeGenerator.<>c.<Generate>b__0_0(MemberToGenerate e)
+   at System.Linq.Lookup`2.Create(IEnumerable`1 source, Func`2 keySelector, IEqualityComparer`1 comparer)
+   at System.Linq.GroupedEnumerable`2.GetEnumerator()
+   at GoLive.Generator.PropertyChangedNotifier.SourceCodeGenerator.Generate(SourceStringBuilder source, Settings config, GeneratorExecutionContext context, ClassToGenerate controllerRoutes)
+   at GoLive.Generator.PropertyChangedNotifier.Generator.Execute(GeneratorExecutionContext context)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using FastMember;
 using GoLive.Generator.PropertyChangedNotifier.Utilities;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground
@@ -11,19 +12,21 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 
         public SecondItem()
         {
-            thingsContained = new();
-            thingsContained.ItemPropertyChanged += ThingsContainedOnItemPropertyChanged;
-            thingsContained.CollectionChanged += ThingsContainedOnCollectionChanged;
+            ThingsContained = new();
+            ThingsContained.ItemPropertyChanged += ThingsContainedOnItemPropertyChanged;
+            ThingsContained.CollectionChanged += ThingsContainedOnCollectionChanged;
         }
 
         private void ThingsContainedOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            
+            Changes.Add($"thingsContained.{e.OldStartingIndex}", e.NewItems);
         }
+
+        TypeAccessor mainItemTypeAccesor = TypeAccessor.Create(typeof(MainItem));
 
         private void ThingsContainedOnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)
         {
-            e.
+            Changes.Add($"thingsContained.{e.CollectionIndex}.{e.PropertyName}", mainItemTypeAccesor[thingsContained[e.CollectionIndex], e.PropertyName]);
         }
 
         private FullyObservableCollection<MainItem> thingsContained;

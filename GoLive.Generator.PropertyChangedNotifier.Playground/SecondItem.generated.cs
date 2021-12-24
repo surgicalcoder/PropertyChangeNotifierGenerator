@@ -20,6 +20,8 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 
         public string Item1 { get => item1; set => SetField(ref item1, value); }
 
-        public System.Collections.ObjectModel.ObservableCollection<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
+        public FastMember.TypeAccessor MainItemTypeAccesor { get => mainItemTypeAccesor; set => SetField(ref mainItemTypeAccesor, value); }
+
+        public GoLive.Generator.PropertyChangedNotifier.Utilities.FullyObservableCollection<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
     }
 }
