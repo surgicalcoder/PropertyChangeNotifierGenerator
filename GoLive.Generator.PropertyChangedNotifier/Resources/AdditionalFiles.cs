@@ -113,6 +113,14 @@ public class ReadonlyAtribute : Attribute
 
 }
 
+
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+public class WriteOnlyAtribute : Attribute
+{
+
+}
+
+
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
 public class DoNotTrackChangesAttribute : Attribute
 {

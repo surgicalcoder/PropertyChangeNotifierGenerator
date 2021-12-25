@@ -10,7 +10,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
     public partial class IgnoreTest : Entity
     {
         [DoNotTrackChanges]
-        private string ignoreTest;
+        private string ignoreTestItem;
         [ReadonlyAtribute]
         private string readonlyTest;
         private string everythingElseTest;

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using GoLive.Generator.PropertyChangedNotifier.Model;
 using Microsoft.CodeAnalysis;
@@ -8,7 +11,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
 {
     public static class Scanner
     {
-        public static IEnumerable<ClassToGenerate> ScanForEligibleClasses(SemanticModel semantic, Settings config)
+        public static IEnumerable<ClassToGenerate> ScanForEligibleClasses(SemanticModel semantic, Settings config, GeneratorExecutionContext generatorExecutionContext)
         {
             var controllerBase = semantic.Compilation.GetTypeByMetadataName(config.BaseTypeName);
 
@@ -27,11 +30,11 @@ namespace GoLive.Generator.PropertyChangedNotifier
                         continue;
                     }
 
-                    yield return GenerateClassDefinition(syntaxTreeFilePath, classSymbol);
+                    yield return GenerateClassDefinition(syntaxTreeFilePath, classSymbol, generatorExecutionContext);
                 }
         }
 
-        public static ClassToGenerate GenerateClassDefinition(string syntaxTreeFilePath, INamedTypeSymbol classSymbol)
+        public static ClassToGenerate GenerateClassDefinition(string syntaxTreeFilePath, INamedTypeSymbol classSymbol, GeneratorExecutionContext generatorExecutionContext)
         {
             var gen = new ClassToGenerate();
 
@@ -50,6 +53,20 @@ namespace GoLive.Generator.PropertyChangedNotifier
                         Name = fieldSymbol.Name,
                         Type = fieldSymbol.Type.ToDisplayString()
                     };
+                 
+                    var attr = fieldSymbol.GetAttributes();
+                    
+                    if(attr.Any(e=>e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.DoNotTrackChangesAttribute"))
+                    {
+                        continue;
+                    }
+                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.ReadonlyAtribute"))
+                    {
+                        memberToGenerate.ReadOnly = true;
+                    }                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.WriteOnlyAtribute"))
+                    {
+                        memberToGenerate.WriteOnly = true;
+                    }
                     
                     switch (fieldSymbol.Type)
                     {

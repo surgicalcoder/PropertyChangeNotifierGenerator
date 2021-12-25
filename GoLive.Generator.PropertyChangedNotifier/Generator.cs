@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 var compilation = context.Compilation;
 
                 var classesToGen = compilation.SyntaxTrees.Select(t => compilation.GetSemanticModel(t))
-                    .Select(e => Scanner.ScanForEligibleClasses(e, config))
+                    .Select(e => Scanner.ScanForEligibleClasses(e, config, context))
                     .SelectMany(c => c)
                     .ToArray();
 

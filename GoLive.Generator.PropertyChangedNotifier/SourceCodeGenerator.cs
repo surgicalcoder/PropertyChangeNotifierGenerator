@@ -96,8 +96,15 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
             var itemName = item.Name;
             source.AppendLine($"public {item.Type} {itemName.FirstCharToUpper()}");
             source.AppendOpenCurlyBracketLine();
-            source.AppendLine($"get => {itemName};");
-            source.AppendLine($"set => SetField(ref {itemName}, value);");
+            if (!item.WriteOnly)
+            {
+                source.AppendLine($"get => {itemName};");
+            }
+            if (!item.ReadOnly)
+            {
+                source.AppendLine($"set => SetField(ref {itemName}, value);");
+            }
+            
             source.AppendCloseCurlyBracketLine();
         }
     }

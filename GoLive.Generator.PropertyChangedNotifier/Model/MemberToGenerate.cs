@@ -11,5 +11,6 @@ namespace GoLive.Generator.PropertyChangedNotifier.Model
         public ITypeSymbol? CollectionType { get; set; }
 
         public bool ReadOnly { get; set; }
+        public bool WriteOnly { get; set; }
     }
 }
