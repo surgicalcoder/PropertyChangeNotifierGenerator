@@ -8,27 +8,12 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 
     public partial class SecondItem : Entity
     {
-        private string item1;
-
         public SecondItem()
         {
-            ThingsContained = new();
-            ThingsContained.ItemPropertyChanged += ThingsContainedOnItemPropertyChanged;
-            ThingsContained.CollectionChanged += ThingsContainedOnCollectionChanged;
+            GeneratedCtor(); // needed
         }
 
-        private void ThingsContainedOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            Changes.Add($"thingsContained.{e.OldStartingIndex}", e.NewItems);
-        }
-
-        TypeAccessor mainItemTypeAccesor = TypeAccessor.Create(typeof(MainItem));
-
-        private void ThingsContainedOnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)
-        {
-            Changes.Add($"thingsContained.{e.CollectionIndex}.{e.PropertyName}", mainItemTypeAccesor[thingsContained[e.CollectionIndex], e.PropertyName]);
-        }
-
+        private string item1;
         private FullyObservableCollection<MainItem> thingsContained;
     }
 }

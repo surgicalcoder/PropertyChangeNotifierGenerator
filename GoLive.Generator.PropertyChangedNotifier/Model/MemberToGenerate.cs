@@ -1,4 +1,6 @@
-﻿namespace GoLive.Generator.PropertyChangedNotifier.Model
+﻿using Microsoft.CodeAnalysis;
+
+namespace GoLive.Generator.PropertyChangedNotifier.Model
 {
     public class MemberToGenerate
     {
@@ -6,6 +8,6 @@
         public string Type { get; set; }
 
         public bool IsCollection { get; set; }
-        public string CollectionType { get; set; }
+        public ITypeSymbol? CollectionType { get; set; }
     }
 }

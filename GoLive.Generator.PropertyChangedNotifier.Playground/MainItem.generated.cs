@@ -1,11 +1,17 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using GoLive.Generator.PropertyChangedNotifier.Utilities;
+using System.Collections.Specialized;
+using FastMember;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground
 {
     public partial class MainItem : INotifyPropertyChanged
     {
+        public void GeneratedCtor()
+        {
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")

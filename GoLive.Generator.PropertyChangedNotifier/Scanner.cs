@@ -50,11 +50,11 @@ namespace GoLive.Generator.PropertyChangedNotifier
 
                     if (fieldSymbol.Type is INamedTypeSymbol s1 &&
                         s1.OriginalDefinition.ToString() ==
-                        "System.Collections.Generic.List<T>") // todo need to expand this out to all collection types.
+                        "GoLive.Generator.PropertyChangedNotifier.Utilities.FullyObservableCollection<T>") 
                     {
                         memberToGenerate.IsCollection = true;
                         memberToGenerate.CollectionType =
-                            s1.TypeArguments.FirstOrDefault().ToString(); // todo not a string plz.
+                            s1.TypeArguments.FirstOrDefault(); // todo not a string plz.
                     }
 
                     gen.Members.Add(memberToGenerate);
