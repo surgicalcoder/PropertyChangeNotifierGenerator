@@ -109,4 +109,17 @@ public class FullyObservableCollection<T> : ObservableCollection<T>
         public ItemPropertyChangedEventArgs(int index, PropertyChangedEventArgs args) : this(index, args.PropertyName)
         { }
     }
+
+
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+public class ReadonlyAtribute : Attribute
+{
+
+}
+
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+public class DoNotTrackChangesAttribute : Attribute
+{
+
+}
 }

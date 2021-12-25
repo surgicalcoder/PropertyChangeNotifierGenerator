@@ -6,3 +6,4 @@ public abstract class Entity
 
     public Dictionary<string, dynamic> Changes = new();
 }
+

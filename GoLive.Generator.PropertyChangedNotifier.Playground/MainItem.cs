@@ -5,3 +5,4 @@ public partial class MainItem : Entity
     private string name;
     private string description;
 }
+

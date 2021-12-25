@@ -9,5 +9,7 @@ namespace GoLive.Generator.PropertyChangedNotifier.Model
 
         public bool IsCollection { get; set; }
         public ITypeSymbol? CollectionType { get; set; }
+
+        public bool ReadOnly { get; set; }
     }
 }

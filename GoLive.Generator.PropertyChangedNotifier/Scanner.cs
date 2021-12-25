@@ -22,7 +22,10 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 {
                     var syntaxTreeFilePath = node.SyntaxTree.FilePath;
 
-                    if (syntaxTreeFilePath.EndsWith(".generated.cs")) continue;
+                    if (syntaxTreeFilePath.EndsWith("generated.cs"))
+                    {
+                        continue;
+                    }
 
                     yield return GenerateClassDefinition(syntaxTreeFilePath, classSymbol);
                 }
@@ -47,14 +50,15 @@ namespace GoLive.Generator.PropertyChangedNotifier
                         Name = fieldSymbol.Name,
                         Type = fieldSymbol.Type.ToDisplayString()
                     };
-
-                    if (fieldSymbol.Type is INamedTypeSymbol s1 &&
-                        s1.OriginalDefinition.ToString() ==
-                        "GoLive.Generator.PropertyChangedNotifier.Utilities.FullyObservableCollection<T>") 
+                    
+                    switch (fieldSymbol.Type)
                     {
-                        memberToGenerate.IsCollection = true;
-                        memberToGenerate.CollectionType =
-                            s1.TypeArguments.FirstOrDefault(); // todo not a string plz.
+                        case INamedTypeSymbol s2 when s2.OriginalDefinition.ToString() == "FastMember.TypeAccessor":
+                            continue;
+                        case INamedTypeSymbol s1 when s1.OriginalDefinition.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.FullyObservableCollection<T>":
+                            memberToGenerate.IsCollection = true;
+                            memberToGenerate.CollectionType = s1.TypeArguments.FirstOrDefault();
+                            break;
                     }
 
                     gen.Members.Add(memberToGenerate);

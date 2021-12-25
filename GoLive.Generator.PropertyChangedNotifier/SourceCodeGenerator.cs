@@ -50,7 +50,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
 
                 source.AppendLine($"private void {collTargetName}OnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)");
                 source.AppendOpenCurlyBracketLine();
-                //                      Changes.Add($"thingsContained.{e.CollectionIndex}.{e.PropertyName}", mainItemTypeAccesor[thingsContained[e.CollectionIndex], e.PropertyName]);
+
                 source.AppendLine($"Changes.Add($\"{collTargetName}.{{e.CollectionIndex}}.{{e.PropertyName}}\", {coll.CollectionType.Name}TypeAccessor[{collTargetName}[e.CollectionIndex], e.PropertyName]);");
                 source.AppendCloseCurlyBracketLine();
 
