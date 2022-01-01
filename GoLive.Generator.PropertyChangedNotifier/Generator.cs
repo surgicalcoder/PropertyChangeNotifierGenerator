@@ -17,7 +17,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
             if (additionalFileContents is null)
             {
                
-                using var reader = new StreamReader(GetType().Assembly.GetManifestResourceStream("GoLive.Generator.PropertyChangedNotifier.Resources.AdditionalFiles.cs"), Encoding.UTF8);
+                using var reader = new StreamReader(GetType().Assembly.GetManifestResourceStream(EmbeddedResources.Resources_AdditionalFiles_cs), Encoding.UTF8);
                 additionalFileContents = reader.ReadToEnd();
             }
         }

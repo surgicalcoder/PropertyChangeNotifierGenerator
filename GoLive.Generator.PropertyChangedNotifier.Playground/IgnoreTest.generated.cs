@@ -24,7 +24,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
             return true;
         }
 
-        public string ReadonlyTest { get => readonlyTest; set => SetField(ref readonlyTest, value); }
+        public string ReadonlyTest { get => readonlyTest; }
 
         public string EverythingElseTest { get => everythingElseTest; set => SetField(ref everythingElseTest, value); }
     }
