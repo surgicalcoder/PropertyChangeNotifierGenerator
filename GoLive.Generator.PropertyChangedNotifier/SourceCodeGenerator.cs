@@ -100,8 +100,10 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
 {
     if (EqualityComparer<T>.Default.Equals(field, value)) return false;
     field = value;
-    OnPropertyChanged(propertyName);
-    Changes.Upsert(propertyName,value);
+    if (EnableChangeTracking){
+        OnPropertyChanged(propertyName);
+        Changes.Upsert(propertyName,value);
+    }
     return true;
 }");
 

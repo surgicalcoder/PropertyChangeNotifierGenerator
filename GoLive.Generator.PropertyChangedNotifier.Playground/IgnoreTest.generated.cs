@@ -20,8 +20,12 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
             field = value;
-            OnPropertyChanged(propertyName);
-            Changes.Upsert(propertyName, value);
+            if (EnableChangeTracking)
+            {
+                OnPropertyChanged(propertyName);
+                Changes.Upsert(propertyName, value);
+            }
+
             return true;
         }
 

@@ -40,14 +40,21 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 {
                     var sourceStringBuilder = new SourceStringBuilder();
                     SourceCodeGenerator.Generate(sourceStringBuilder, config, context, classToGenerate);
-                    if (sourceStringBuilder.ToString() is {Length: > 0} s)
+
+                    if (sourceStringBuilder.ToString() is { Length: > 0 } s)
+                    {
                         File.WriteAllText(classToGenerate.Filename.Replace(".cs", ".generated.cs"), s);
+                    }
                 }
 
                 if (config.AdditionalFilesLocation is { })
+                {
                     File.WriteAllText(config.AdditionalFilesLocation, OutputAdditionalFiles(config));
+                }
                 else
+                {
                     context.AddSource("AdditionalFiles.cs", OutputAdditionalFiles(config));
+                }
             }
             catch (Exception e)
             {
@@ -58,7 +65,9 @@ namespace GoLive.Generator.PropertyChangedNotifier
         private string OutputAdditionalFiles(Settings settings)
         {
             var builder = new StringBuilder();
-            builder.AppendLine("using System.Collections.ObjectModel;\nusing System.Collections.Specialized;\nusing System.ComponentModel;");
+            builder.AppendLine(@"using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;");
             builder.AppendLine("namespace GoLive.Generator.PropertyChangedNotifier.Utilities { ");
 
             builder.AppendLine(additionalFileContents);
