@@ -74,7 +74,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 source.AppendLine();
             }*/
             
-            foreach (var coll in classToGen.Members.Where(f => f.IsCollection))
+            /*foreach (var coll in classToGen.Members.Where(f => f.IsCollection))
             {
                 var collTargetName = coll.Name.FirstCharToUpper();
 
@@ -90,7 +90,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 source.AppendLine($"Changes.Upsert($\"{collTargetName}.{{e.CollectionIndex}}.{{e.PropertyName}}\", {coll.CollectionType.Name}TypeAccessor[{collTargetName}[e.CollectionIndex], e.PropertyName]);");
                 source.AppendCloseCurlyBracketLine();
 
-            }
+            }*/
 
             source.AppendLine(@"public event PropertyChangedEventHandler? PropertyChanged;
 

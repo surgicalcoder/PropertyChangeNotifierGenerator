@@ -17,26 +17,6 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
-        private void StringsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            Changes.Upsert($"Strings.{e.OldStartingIndex}", e.NewItems);
-        }
-
-        private void StringsOnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)
-        {
-            Changes.Upsert($"Strings.{e.CollectionIndex}.{e.PropertyName}", StringTypeAccessor[Strings[e.CollectionIndex], e.PropertyName]);
-        }
-
-        private void AnotherStringOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            Changes.Upsert($"AnotherString.{e.OldStartingIndex}", e.NewItems);
-        }
-
-        private void AnotherStringOnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)
-        {
-            Changes.Upsert($"AnotherString.{e.CollectionIndex}.{e.PropertyName}", StringTypeAccessor[AnotherString[e.CollectionIndex], e.PropertyName]);
-        }
-
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")

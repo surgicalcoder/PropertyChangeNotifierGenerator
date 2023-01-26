@@ -29,7 +29,7 @@ public class Program
                 item.AnotherString.Add("Wibble 2");
                 item.AnotherString.Insert(0, "Wibble 3");
                 item.Strings.Add("string 2");
-                
+                item.Strings[0] = "overwritten";
                 Console.WriteLine();
         }
 }

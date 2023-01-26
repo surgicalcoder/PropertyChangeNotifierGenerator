@@ -16,16 +16,6 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 
         TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
         TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(GoLive.Generator.ProperyChangedNotifier.Playground.MainItem));
-        private void ThingsContainedOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-        {
-            Changes.Upsert($"ThingsContained.{e.OldStartingIndex}", e.NewItems);
-        }
-
-        private void ThingsContainedOnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)
-        {
-            Changes.Upsert($"ThingsContained.{e.CollectionIndex}.{e.PropertyName}", MainItemTypeAccessor[ThingsContained[e.CollectionIndex], e.PropertyName]);
-        }
-
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
