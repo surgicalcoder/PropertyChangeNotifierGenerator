@@ -17,7 +17,6 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
-        TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(String));
         private void StringsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             Changes.Upsert($"Strings.{e.OldStartingIndex}", e.NewItems);

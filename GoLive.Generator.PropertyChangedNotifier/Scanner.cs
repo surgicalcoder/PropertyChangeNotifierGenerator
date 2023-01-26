@@ -51,7 +51,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     var memberToGenerate = new MemberToGenerate
                     {
                         Name = fieldSymbol.Name,
-                        Type = fieldSymbol.Type.ToDisplayString()
+                        Type = fieldSymbol.Type
                     };
                  
                     var attr = fieldSymbol.GetAttributes();

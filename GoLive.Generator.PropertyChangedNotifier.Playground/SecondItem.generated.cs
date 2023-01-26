@@ -15,7 +15,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
-        TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(MainItem));
+        TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(GoLive.Generator.ProperyChangedNotifier.Playground.MainItem));
         private void ThingsContainedOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             Changes.Upsert($"ThingsContained.{e.OldStartingIndex}", e.NewItems);

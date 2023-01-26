@@ -36,7 +36,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
             }
             source.AppendCloseCurlyBracketLine();
             
-            List<string> typeAccessorsToCreate = new();
+            List<ITypeSymbol> typeAccessorsToCreate = new();
 
             foreach (var s in classToGen.Members.Where(f => !f.IsCollection).Select(f => f.Type).Distinct())
             {
@@ -46,7 +46,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 }
             }
 
-            foreach (var s in classToGen.Members.Where(f => f.CollectionType != null).Select(f => f.CollectionType.Name).Distinct())
+            foreach (var s in classToGen.Members.Where(f => f.CollectionType != null).Select(f => f.CollectionType).Distinct())
             {
                 if (!typeAccessorsToCreate.Contains(s))
                 {
@@ -56,7 +56,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
             
             foreach (var s in typeAccessorsToCreate)
             {
-                var collTargetName = s.FirstCharToUpper();
+                var collTargetName = s.Name.FirstCharToUpper();
                 source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
                 source.AppendLine();
             }
