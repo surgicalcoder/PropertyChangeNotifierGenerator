@@ -74,6 +74,22 @@
         }
     }
 
+    
+public static class DictionaryExt
+{
+    public static void Upsert<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> dictionary, TKey key, TValue value)
+    {
+        if (dictionary.ContainsKey(key))
+        {
+            dictionary[key] = value;
+        }
+        else
+        {
+            dictionary.Add(key, value);
+        }
+    }
+}
+
     /// <summary>
     /// Provides data for the <see cref="FullyObservableCollection{T}.ItemPropertyChanged"/> event.
     /// </summary>
@@ -108,14 +124,14 @@
 
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-public class ReadonlyAtribute : Attribute
+public class ReadonlyAttribute : Attribute
 {
 
 }
 
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-public class WriteOnlyAtribute : Attribute
+public class WriteOnlyAttribute : Attribute
 {
 
 }

@@ -11,7 +11,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
     {
         [DoNotTrackChanges]
         private string ignoreTestItem;
-        [ReadonlyAtribute]
+        [Readonly]
         private string readonlyTest;
         private string everythingElseTest;
     }

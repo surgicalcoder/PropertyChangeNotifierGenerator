@@ -1,4 +1,6 @@
-﻿namespace GoLive.Generator.PropertyChangedNotifier
+﻿
+
+namespace GoLive.Generator.PropertyChangedNotifier
 {
     public class Settings
     {

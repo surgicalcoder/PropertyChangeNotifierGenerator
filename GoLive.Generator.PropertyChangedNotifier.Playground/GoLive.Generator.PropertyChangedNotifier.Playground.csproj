@@ -5,6 +5,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>GoLive.Generator.ProperyChangedNotifier.Playground</RootNamespace>
+
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)\GeneratedFiles</CompilerGeneratedFilesOutputPath>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,5 +21,6 @@
 
     <ItemGroup>
       <PackageReference Include="FastMember-surgicalcoder" Version="1.3.0" />
+      <PackageReference Include="ObservableCollections" Version="1.1.3" />
     </ItemGroup>
 </Project>

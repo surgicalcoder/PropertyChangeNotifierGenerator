@@ -8,10 +8,11 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 {
     public partial class IgnoreTest : INotifyPropertyChanged
     {
-        public void GeneratedCtor()
+        public IgnoreTest()
         {
         }
 
+        TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
@@ -20,7 +21,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
                 return false;
             field = value;
             OnPropertyChanged(propertyName);
-            Changes.Add(propertyName, value);
+            Changes.Upsert(propertyName, value);
             return true;
         }
 

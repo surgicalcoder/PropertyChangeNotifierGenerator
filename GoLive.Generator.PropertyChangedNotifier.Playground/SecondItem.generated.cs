@@ -8,22 +8,22 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 {
     public partial class SecondItem : INotifyPropertyChanged
     {
-        public void GeneratedCtor()
+        public SecondItem()
         {
             ThingsContained = new();
-            ThingsContained.ItemPropertyChanged += ThingsContainedOnItemPropertyChanged;
-            ThingsContained.CollectionChanged += ThingsContainedOnCollectionChanged;
+            ThingsContained.CollectionChanged += (in ObservableCollections.NotifyCollectionChangedEventArgs<MainItem> eventArgs) => Changes.Upsert($"ThingsContained.{eventArgs.NewStartingIndex}", eventArgs.NewItem);
         }
 
-        TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(GoLive.Generator.ProperyChangedNotifier.Playground.MainItem));
+        TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
+        TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(MainItem));
         private void ThingsContainedOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            Changes.Add($"ThingsContained.{e.OldStartingIndex}", e.NewItems);
+            Changes.Upsert($"ThingsContained.{e.OldStartingIndex}", e.NewItems);
         }
 
         private void ThingsContainedOnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)
         {
-            Changes.Add($"ThingsContained.{e.CollectionIndex}.{e.PropertyName}", MainItemTypeAccessor[ThingsContained[e.CollectionIndex], e.PropertyName]);
+            Changes.Upsert($"ThingsContained.{e.CollectionIndex}.{e.PropertyName}", MainItemTypeAccessor[ThingsContained[e.CollectionIndex], e.PropertyName]);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -34,12 +34,12 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
                 return false;
             field = value;
             OnPropertyChanged(propertyName);
-            Changes.Add(propertyName, value);
+            Changes.Upsert(propertyName, value);
             return true;
         }
 
         public string Item1 { get => item1; set => SetField(ref item1, value); }
 
-        public FullyObservableCollection<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
+        public ObservableCollections.ObservableList<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
     }
 }

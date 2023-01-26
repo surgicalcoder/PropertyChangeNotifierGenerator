@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GoLive.Generator.PropertyChangedNotifier.Model;
 using Microsoft.CodeAnalysis;
 
@@ -21,37 +22,72 @@ namespace GoLive.Generator.PropertyChangedNotifier
 
             source.AppendLine($"public partial class {classToGen.Name} : INotifyPropertyChanged {{");
             source.AppendIndent();
+            
+            source.AppendLine($"public {classToGen.Name}()");
+            source.AppendOpenCurlyBracketLine();
 
             
-            source.AppendLine("public void GeneratedCtor()");
-            source.AppendOpenCurlyBracketLine();
+            
             foreach (var coll in classToGen.Members.Where(f=>f.IsCollection))
             {
                 var collTargetName = coll.Name.FirstCharToUpper();
-                source.AppendLine($"{collTargetName} = new ();");
-                source.AppendLine($"{collTargetName}.ItemPropertyChanged += {collTargetName}OnItemPropertyChanged;");
-                source.AppendLine($"{collTargetName}.CollectionChanged += {collTargetName}OnCollectionChanged;");
+                source.AppendLine($"{collTargetName} = new();");
+                source.AppendLine($"{collTargetName}.CollectionChanged += (in ObservableCollections.NotifyCollectionChangedEventArgs<{coll.CollectionType.Name}> eventArgs) => Changes.Upsert($\"{collTargetName}.{{eventArgs.NewStartingIndex}}\", eventArgs.NewItem);");
             }
             source.AppendCloseCurlyBracketLine();
             
+            List<string> typeAccessorsToCreate = new();
+
+            foreach (var s in classToGen.Members.Where(f => !f.IsCollection).Select(f => f.Type).Distinct())
+            {
+                if (!typeAccessorsToCreate.Contains(s))
+                {
+                    typeAccessorsToCreate.Add(s);
+                }
+            }
+
+            foreach (var s in classToGen.Members.Where(f => f.CollectionType != null).Select(f => f.CollectionType.Name).Distinct())
+            {
+                if (!typeAccessorsToCreate.Contains(s))
+                {
+                    typeAccessorsToCreate.Add(s);
+                }
+            }
+            
+            foreach (var s in typeAccessorsToCreate)
+            {
+                var collTargetName = s.FirstCharToUpper();
+                source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
+                source.AppendLine();
+            }
+            
+            /*foreach (var s in classToGen.Members.Where(f=>!f.IsCollection).Select(f=>f.Type).Distinct())
+            {
+                var collTargetName = s.FirstCharToUpper();
+                source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
+                source.AppendLine();
+            }
+            foreach (var s in classToGen.Members.Where(f=>f.CollectionType != null).Select(f=>f.CollectionType.Name).Distinct())
+            {
+                var collTargetName = s.FirstCharToUpper();
+                source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
+                source.AppendLine();
+            }*/
             
             foreach (var coll in classToGen.Members.Where(f => f.IsCollection))
             {
                 var collTargetName = coll.Name.FirstCharToUpper();
-                source.AppendLine($"TypeAccessor {coll.CollectionType.Name}TypeAccessor = TypeAccessor.Create(typeof({coll.CollectionType.ToString()}));");
-                source.AppendLine();
-                
+
                 source.AppendLine($"private void {collTargetName}OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)");
                 source.AppendOpenCurlyBracketLine();
-                source.AppendLine($"Changes.Add($\"{collTargetName}.{{e.OldStartingIndex}}\", e.NewItems);");
+                source.AppendLine($"Changes.Upsert($\"{collTargetName}.{{e.OldStartingIndex}}\", e.NewItems);");
                 source.AppendCloseCurlyBracketLine();
                 
                 source.AppendLine();
 
                 source.AppendLine($"private void {collTargetName}OnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)");
                 source.AppendOpenCurlyBracketLine();
-
-                source.AppendLine($"Changes.Add($\"{collTargetName}.{{e.CollectionIndex}}.{{e.PropertyName}}\", {coll.CollectionType.Name}TypeAccessor[{collTargetName}[e.CollectionIndex], e.PropertyName]);");
+                source.AppendLine($"Changes.Upsert($\"{collTargetName}.{{e.CollectionIndex}}.{{e.PropertyName}}\", {coll.CollectionType.Name}TypeAccessor[{collTargetName}[e.CollectionIndex], e.PropertyName]);");
                 source.AppendCloseCurlyBracketLine();
 
             }
@@ -65,7 +101,7 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
     if (EqualityComparer<T>.Default.Equals(field, value)) return false;
     field = value;
     OnPropertyChanged(propertyName);
-    Changes.Add(propertyName,value);
+    Changes.Upsert(propertyName,value);
     return true;
 }");
 
@@ -84,7 +120,7 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
         private static void GenerateCollectionMember(SourceStringBuilder source, MemberToGenerate item)
         {
             var itemName = item.Name;
-            source.AppendLine($"public FullyObservableCollection<{item.CollectionType}> {itemName.FirstCharToUpper()}");
+            source.AppendLine($"public ObservableCollections.ObservableList<{item.CollectionType}> {itemName.FirstCharToUpper()}");
             source.AppendOpenCurlyBracketLine();
             source.AppendLine($"get => {itemName};");
             source.AppendLine($"set => SetField(ref {itemName}, value);");

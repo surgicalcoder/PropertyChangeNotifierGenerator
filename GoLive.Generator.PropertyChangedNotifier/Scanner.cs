@@ -60,10 +60,11 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     {
                         continue;
                     }
-                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.ReadonlyAtribute"))
+                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.ReadonlyAttribute"))
                     {
                         memberToGenerate.ReadOnly = true;
-                    }                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.WriteOnlyAtribute"))
+                    }                    
+                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.WriteOnlyAttribute"))
                     {
                         memberToGenerate.WriteOnly = true;
                     }
@@ -72,7 +73,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     {
                         case INamedTypeSymbol s2 when s2.OriginalDefinition.ToString() == "FastMember.TypeAccessor":
                             continue;
-                        case INamedTypeSymbol s1 when s1.OriginalDefinition.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.FullyObservableCollection<T>":
+                        case INamedTypeSymbol s1 when s1.OriginalDefinition.ToString() == "ObservableCollections.ObservableList<T>":
                             memberToGenerate.IsCollection = true;
                             memberToGenerate.CollectionType = s1.TypeArguments.FirstOrDefault();
                             break;
