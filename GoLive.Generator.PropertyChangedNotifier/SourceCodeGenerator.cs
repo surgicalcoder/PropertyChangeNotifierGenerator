@@ -61,37 +61,6 @@ namespace GoLive.Generator.PropertyChangedNotifier
                 source.AppendLine();
             }
             
-            /*foreach (var s in classToGen.Members.Where(f=>!f.IsCollection).Select(f=>f.Type).Distinct())
-            {
-                var collTargetName = s.FirstCharToUpper();
-                source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
-                source.AppendLine();
-            }
-            foreach (var s in classToGen.Members.Where(f=>f.CollectionType != null).Select(f=>f.CollectionType.Name).Distinct())
-            {
-                var collTargetName = s.FirstCharToUpper();
-                source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
-                source.AppendLine();
-            }*/
-            
-            /*foreach (var coll in classToGen.Members.Where(f => f.IsCollection))
-            {
-                var collTargetName = coll.Name.FirstCharToUpper();
-
-                source.AppendLine($"private void {collTargetName}OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)");
-                source.AppendOpenCurlyBracketLine();
-                source.AppendLine($"Changes.Upsert($\"{collTargetName}.{{e.OldStartingIndex}}\", e.NewItems);");
-                source.AppendCloseCurlyBracketLine();
-                
-                source.AppendLine();
-
-                source.AppendLine($"private void {collTargetName}OnItemPropertyChanged(object? sender, ItemPropertyChangedEventArgs e)");
-                source.AppendOpenCurlyBracketLine();
-                source.AppendLine($"Changes.Upsert($\"{collTargetName}.{{e.CollectionIndex}}.{{e.PropertyName}}\", {coll.CollectionType.Name}TypeAccessor[{collTargetName}[e.CollectionIndex], e.PropertyName]);");
-                source.AppendCloseCurlyBracketLine();
-
-            }*/
-
             source.AppendLine(@"public event PropertyChangedEventHandler? PropertyChanged;
 
 protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
