@@ -45,7 +45,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
             foreach (var member in classSymbol.GetMembers())
                 if (member is IFieldSymbol
                     {
-                        //DeclaredAccessibility: Accessibility.Private, IsAbstract: false
+                        DeclaredAccessibility: Accessibility.Private, IsAbstract: false, AssociatedSymbol: null
                     } fieldSymbol /*and not {MethodKind: MethodKind.Constructor}*/)
                 {
                     var memberToGenerate = new MemberToGenerate
@@ -53,14 +53,20 @@ namespace GoLive.Generator.PropertyChangedNotifier
                         Name = fieldSymbol.Name,
                         Type = fieldSymbol.Type
                     };
-                 
+                    
                     var attr = fieldSymbol.GetAttributes();
                     
                     if(attr.Any(e=>e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.DoNotTrackChangesAttribute"))
                     {
                         continue;
                     }
-                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.ReadonlyAttribute"))
+                    
+                    if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.AddRefToScopeAttribute"))
+                    {
+                        memberToGenerate.IsScoped = true;
+                    }  
+
+                    if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.ReadonlyAttribute"))
                     {
                         memberToGenerate.ReadOnly = true;
                     }                    
@@ -68,7 +74,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     {
                         memberToGenerate.WriteOnly = true;
                     }
-                    
+
                     switch (fieldSymbol.Type)
                     {
                         case INamedTypeSymbol s2 when s2.OriginalDefinition.ToString() == "FastMember.TypeAccessor":

@@ -103,11 +103,35 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
             var itemName = item.Name;
             source.AppendLine($"public {item.Type} {itemName.FirstCharToUpper()}");
             source.AppendOpenCurlyBracketLine();
+            
             if (!item.WriteOnly)
             {
                 source.AppendLine($"get => {itemName};");
             }
-            if (!item.ReadOnly)
+
+            if (item.IsScoped)
+            {
+                source.AppendLine($@"set
+        {{
+            if (value != null && !string.IsNullOrWhiteSpace(value.Id))
+            {{
+                if ({itemName} != null && !string.IsNullOrWhiteSpace({itemName}.Id) && Scopes.Contains({itemName}.Id))
+                {{
+                    Scopes.Remove({itemName}.Id);
+                }}
+                Scopes.Add(value.Id);
+                SetField(ref {itemName}, value.Id);
+            }}
+            else
+            {{
+                if ({itemName} != null && !string.IsNullOrWhiteSpace({itemName}.Id) && Scopes.Contains({itemName}.Id))
+                {{
+                    Scopes.Remove({itemName}.Id);
+                    SetField(ref {itemName}, string.Empty);
+                }}
+            }}
+        }}");
+            } else if (!item.ReadOnly)
             {
                 source.AppendLine($"set => SetField(ref {itemName}, value);");
             }

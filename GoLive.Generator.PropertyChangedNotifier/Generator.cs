@@ -16,7 +16,6 @@ namespace GoLive.Generator.PropertyChangedNotifier
         {
             if (additionalFileContents is null)
             {
-               
                 using var reader = new StreamReader(GetType().Assembly.GetManifestResourceStream(EmbeddedResources.Resources_AdditionalFiles_cs), Encoding.UTF8);
                 additionalFileContents = reader.ReadToEnd();
             }
@@ -47,7 +46,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     }
                 }
 
-                if (config.AdditionalFilesLocation is { })
+                if (config.AdditionalFilesLocation is not null)
                 {
                     File.WriteAllText(config.AdditionalFilesLocation, OutputAdditionalFiles(config));
                 }
@@ -58,7 +57,10 @@ namespace GoLive.Generator.PropertyChangedNotifier
             }
             catch (Exception e)
             {
-                File.WriteAllText(config.LogFile, e.ToString());
+                if (!string.IsNullOrWhiteSpace(config.LogFile))
+                {
+                    File.WriteAllText(config.LogFile, e.ToString());
+                }
             }
         }
 

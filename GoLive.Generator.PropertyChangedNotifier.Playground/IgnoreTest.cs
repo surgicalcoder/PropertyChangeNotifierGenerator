@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GoLive.Generator.PropertyChangedNotifier.Utilities;
+using GoLive.Saturn.Data.Entities;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground
 {
@@ -14,5 +15,8 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         [Readonly]
         private string readonlyTest;
         private string everythingElseTest;
+        
+        public Dictionary<string, object> Changes = new();
+        public bool EnableChangeTracking { get; set; }
     }
 }

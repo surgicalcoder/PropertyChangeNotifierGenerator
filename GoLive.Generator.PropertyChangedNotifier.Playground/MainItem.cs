@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using GoLive.Generator.PropertyChangedNotifier.Utilities;
+using GoLive.Saturn.Data.Entities;
 using ObservableCollections;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground;
@@ -10,8 +11,11 @@ public partial class MainItem : Entity
     private string description;
     private ObservableList<string> strings;
     private ObservableList<string> anotherString;
+    
+    
+    public Dictionary<string, object> Changes = new();
+    public bool EnableChangeTracking { get; set; }
 }
-
 
 /*public class ThirdTestItem : Entity
 {

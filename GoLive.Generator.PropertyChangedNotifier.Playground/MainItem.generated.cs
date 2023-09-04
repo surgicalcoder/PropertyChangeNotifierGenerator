@@ -34,11 +34,8 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         public string Name { get => name; set => SetField(ref name, value); }
-
         public string Description { get => description; set => SetField(ref description, value); }
-
         public ObservableCollections.ObservableList<string> Strings { get => strings; set => SetField(ref strings, value); }
-
         public ObservableCollections.ObservableList<string> AnotherString { get => anotherString; set => SetField(ref anotherString, value); }
     }
 }

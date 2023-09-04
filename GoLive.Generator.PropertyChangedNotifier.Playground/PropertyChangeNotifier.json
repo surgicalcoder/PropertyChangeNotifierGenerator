@@ -1,5 +1,5 @@
 ﻿{
-  "BaseTypeName": "GoLive.Generator.ProperyChangedNotifier.Playground.Entity",
+  "BaseTypeName": "GoLive.Saturn.Data.Entities.Entity",
   "LogFile": "PropertyChangeNotifier.txt",
   "AdditionalFilesLocation": "AdditionalFiles.cs"
 }

@@ -12,5 +12,6 @@ namespace GoLive.Generator.PropertyChangedNotifier.Model
 
         public bool ReadOnly { get; set; }
         public bool WriteOnly { get; set; }
+        public bool IsScoped { get; set; }
     }
 }

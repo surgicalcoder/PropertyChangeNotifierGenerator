@@ -33,7 +33,6 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         public string Item1 { get => item1; set => SetField(ref item1, value); }
-
         public ObservableCollections.ObservableList<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
     }
 }

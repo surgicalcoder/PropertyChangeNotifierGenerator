@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using FastMember;
 using GoLive.Generator.PropertyChangedNotifier.Utilities;
+using GoLive.Saturn.Data.Entities;
 using ObservableCollections;
 
 namespace GoLive.Generator.ProperyChangedNotifier.Playground
@@ -10,5 +11,8 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
     {
         private string item1;
         private ObservableList<MainItem> thingsContained;
+        
+        public Dictionary<string, object> Changes = new();
+        public bool EnableChangeTracking { get; set; }
     }
 }
