@@ -1,1 +1,0 @@
-del *.generated.cs

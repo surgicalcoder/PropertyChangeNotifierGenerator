@@ -4,7 +4,7 @@ using GoLive.Generator.PropertyChangedNotifier.Utilities;
 using System.Collections.Specialized;
 using FastMember;
 
-namespace GoLive.Generator.ProperyChangedNotifier.Playground
+namespace GoLive.Generator.PropertyChangedNotifier.Playground
 {
     public partial class SecondItem : INotifyPropertyChanged
     {
@@ -15,7 +15,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
-        TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(GoLive.Generator.ProperyChangedNotifier.Playground.MainItem));
+        TypeAccessor MainItemTypeAccessor = TypeAccessor.Create(typeof(GoLive.Generator.PropertyChangedNotifier.Playground.MainItem));
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
@@ -33,6 +33,6 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         public string Item1 { get => item1; set => SetField(ref item1, value); }
-        public ObservableCollections.ObservableList<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
+        public ObservableCollections.ObservableList<GoLive.Generator.PropertyChangedNotifier.Playground.MainItem> ThingsContained { get => thingsContained; set => SetField(ref thingsContained, value); }
     }
 }

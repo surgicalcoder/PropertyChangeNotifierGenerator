@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-namespace GoLive.Generator.PropertyChangedNotifier.Utilities { 
+namespace  GoLive.Generator.PropertyChangedNotifier.Utilities {
    
 public static class DictionaryExt
 {

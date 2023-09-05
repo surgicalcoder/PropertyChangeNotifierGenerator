@@ -4,7 +4,7 @@ using GoLive.Generator.PropertyChangedNotifier.Utilities;
 using System.Collections.Specialized;
 using FastMember;
 
-namespace GoLive.Generator.ProperyChangedNotifier.Playground
+namespace GoLive.Generator.PropertyChangedNotifier.Playground
 {
     public partial class FourthItem : INotifyPropertyChanged
     {
@@ -13,7 +13,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
         }
 
         TypeAccessor StringTypeAccessor = TypeAccessor.Create(typeof(string));
-        TypeAccessor RefTypeAccessor = TypeAccessor.Create(typeof(GoLive.Saturn.Data.Entities.Ref<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem>));
+        TypeAccessor RefTypeAccessor = TypeAccessor.Create(typeof(GoLive.Saturn.Data.Entities.Ref<GoLive.Generator.PropertyChangedNotifier.Playground.MainItem>));
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
@@ -32,7 +32,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
 
         public string Blarg { get => blarg; set => SetField(ref blarg, value); }
 
-        public GoLive.Saturn.Data.Entities.Ref<GoLive.Generator.ProperyChangedNotifier.Playground.MainItem> MainItem
+        public GoLive.Saturn.Data.Entities.Ref<GoLive.Generator.PropertyChangedNotifier.Playground.MainItem> MainItem
         {
             get => mainItem;
             set
@@ -52,7 +52,7 @@ namespace GoLive.Generator.ProperyChangedNotifier.Playground
                     if (mainItem != null && !string.IsNullOrWhiteSpace(mainItem.Id) && Scopes.Contains(mainItem.Id))
                     {
                         Scopes.Remove(mainItem.Id);
-                        SetField(ref mainItem, string.Empty);
+                        SetField(ref mainItem, "(null or empty)");
                     }
                 }
             }

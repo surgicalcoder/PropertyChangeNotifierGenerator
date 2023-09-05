@@ -30,11 +30,11 @@ namespace GoLive.Generator.PropertyChangedNotifier
                         continue;
                     }
 
-                    yield return GenerateClassDefinition(syntaxTreeFilePath, classSymbol, generatorExecutionContext);
+                    yield return GenerateClassDefinition(config, syntaxTreeFilePath, classSymbol, generatorExecutionContext);
                 }
         }
 
-        public static ClassToGenerate GenerateClassDefinition(string syntaxTreeFilePath, INamedTypeSymbol classSymbol, GeneratorExecutionContext generatorExecutionContext)
+        public static ClassToGenerate GenerateClassDefinition(Settings config, string syntaxTreeFilePath, INamedTypeSymbol classSymbol, GeneratorExecutionContext generatorExecutionContext)
         {
             var gen = new ClassToGenerate();
 
@@ -56,21 +56,21 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     
                     var attr = fieldSymbol.GetAttributes();
                     
-                    if(attr.Any(e=>e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.DoNotTrackChangesAttribute"))
+                    if(attr.Any(e=>e.AttributeClass.ToString() == $"{config.AdditionalFilesNamespace}.DoNotTrackChangesAttribute"))
                     {
                         continue;
                     }
                     
-                    if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.AddRefToScopeAttribute"))
+                    if (attr.Any(e => e.AttributeClass.ToString() == $"{config.AdditionalFilesNamespace}.AddRefToScopeAttribute"))
                     {
                         memberToGenerate.IsScoped = true;
                     }  
 
-                    if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.ReadonlyAttribute"))
+                    if (attr.Any(e => e.AttributeClass.ToString() == $"{config.AdditionalFilesNamespace}.ReadonlyAttribute"))
                     {
                         memberToGenerate.ReadOnly = true;
                     }                    
-                    else if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.PropertyChangedNotifier.Utilities.WriteOnlyAttribute"))
+                    else if (attr.Any(e => e.AttributeClass.ToString() == $"{config.AdditionalFilesNamespace}.WriteOnlyAttribute"))
                     {
                         memberToGenerate.WriteOnly = true;
                     }

@@ -4,7 +4,7 @@ using GoLive.Generator.PropertyChangedNotifier.Utilities;
 using System.Collections.Specialized;
 using FastMember;
 
-namespace GoLive.Generator.ProperyChangedNotifier.Playground
+namespace GoLive.Generator.PropertyChangedNotifier.Playground
 {
     public partial class IgnoreTest : INotifyPropertyChanged
     {

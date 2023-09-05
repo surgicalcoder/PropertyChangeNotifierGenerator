@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "GoLive.Generator.PropertyChangedNotifier": {
+    "GeneratorDebug": {
       "commandName": "DebugRoslynComponent",
       "targetProject": "../GoLive.Generator.PropertyChangedNotifier.Playground/GoLive.Generator.PropertyChangedNotifier.Playground.csproj"
     }

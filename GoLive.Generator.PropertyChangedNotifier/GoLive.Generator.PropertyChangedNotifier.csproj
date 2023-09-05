@@ -9,7 +9,7 @@
         <IsRoslynComponent>true</IsRoslynComponent>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)Generated</CompilerGeneratedFilesOutputPath>
-        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <IncludeBuildOutput>true</IncludeBuildOutput>
         <DevelopmentDependency>true</DevelopmentDependency>
     </PropertyGroup>
     <ItemGroup>

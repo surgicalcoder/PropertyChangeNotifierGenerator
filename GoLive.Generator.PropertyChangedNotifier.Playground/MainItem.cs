@@ -1,9 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using GoLive.Generator.PropertyChangedNotifier.Utilities;
-using GoLive.Saturn.Data.Entities;
+﻿using GoLive.Saturn.Data.Entities;
 using ObservableCollections;
 
-namespace GoLive.Generator.ProperyChangedNotifier.Playground;
+namespace GoLive.Generator.PropertyChangedNotifier.Playground;
 
 public partial class MainItem : Entity
 {

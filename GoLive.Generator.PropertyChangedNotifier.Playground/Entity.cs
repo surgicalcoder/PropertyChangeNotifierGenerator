@@ -1,4 +1,4 @@
-﻿namespace GoLive.Generator.ProperyChangedNotifier.Playground;
+﻿namespace GoLive.Generator.PropertyChangedNotifier.Playground;
 
 /*
 public abstract class Entity

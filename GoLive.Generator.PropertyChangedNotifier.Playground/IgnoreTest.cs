@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GoLive.Generator.PropertyChangedNotifier.Utilities;
+﻿using GoLive.Generator.PropertyChangedNotifier.Utilities;
 using GoLive.Saturn.Data.Entities;
 
-namespace GoLive.Generator.ProperyChangedNotifier.Playground
+namespace GoLive.Generator.PropertyChangedNotifier.Playground
 {
     public partial class IgnoreTest : Entity
     {

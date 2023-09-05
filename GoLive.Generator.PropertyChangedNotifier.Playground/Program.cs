@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using GoLive.Generator.PropertyChangedNotifier.Utilities;
-using ObservableCollections;
 
-namespace GoLive.Generator.ProperyChangedNotifier.Playground;
+namespace GoLive.Generator.PropertyChangedNotifier.Playground;
 
 public class Program
 {
@@ -27,12 +25,11 @@ public class Program
                 fi.MainItem = item;
                 
                 
-                
-                
 
                // item.Strings = new();
                 item.Strings.Add("strings 1");
 
+                fi.MainItem = null;
                 
 
                 item.Name = "Updated Name";
