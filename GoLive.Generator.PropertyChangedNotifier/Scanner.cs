@@ -75,6 +75,12 @@ namespace GoLive.Generator.PropertyChangedNotifier
                         memberToGenerate.WriteOnly = true;
                     }
 
+                    if (attr.Any(e => e.AttributeClass.ToString() == $"{config.AdditionalFilesNamespace}.AddToLimitedViewAttribute"))
+                    {
+                        memberToGenerate.LimitedViews = attr.Where(f => f.AttributeClass.ToString() == $"{config.AdditionalFilesNamespace}.AddToLimitedViewAttribute")
+                            .SelectMany(e => e.NamedArguments.Select(r => r.Value.Value.ToString())).ToList();
+                    }
+
                     switch (fieldSymbol.Type)
                     {
                         case INamedTypeSymbol s2 when s2.OriginalDefinition.ToString() == "FastMember.TypeAccessor":

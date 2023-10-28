@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using GoLive.Generator.PropertyChangedNotifier.Model;
 using Microsoft.CodeAnalysis;
 
-namespace GoLive.Generator.PropertyChangedNotifier
+namespace GoLive.Generator.Saturn
 {
     public static class SourceCodeGenerator
     {
-        public static void Generate(SourceStringBuilder source, Settings config, GeneratorExecutionContext context,
-            ClassToGenerate classToGen)
+        public static void Generate(SourceStringBuilder source, ClassToGenerate classToGen)
         {
             source.AppendLine("using System.ComponentModel;");
             source.AppendLine("using System.Runtime.CompilerServices;");
-            source.AppendLine("using GoLive.Generator.PropertyChangedNotifier.Utilities;");
+            /*source.AppendLine("using GoLive.Generator.PropertyChangedNotifier.Utilities;");*/
             source.AppendLine("using System.Collections.Specialized;");
             source.AppendLine("using FastMember;");
 

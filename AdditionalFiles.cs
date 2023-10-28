@@ -1,4 +1,8 @@
-﻿   
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+namespace  GoLive.Generator.PropertyChangedNotifier.Utilities {
+   
 using System;
 
 public static class DictionaryExt
@@ -39,4 +43,6 @@ public class AddToLimitedViewAttribute : Attribute
         this.Name = Name;
     }
     public string Name { get; set; }
+}
+
 }

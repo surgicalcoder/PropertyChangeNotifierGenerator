@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 
 namespace GoLive.Generator.PropertyChangedNotifier.Model
 {
@@ -13,5 +14,7 @@ namespace GoLive.Generator.PropertyChangedNotifier.Model
         public bool ReadOnly { get; set; }
         public bool WriteOnly { get; set; }
         public bool IsScoped { get; set; }
+
+        public List<string> LimitedViews { get; set; }
     }
 }

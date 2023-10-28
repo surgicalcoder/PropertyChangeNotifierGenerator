@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoLive.Generator.PropertyCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoLive.Generator.PropertyChangedNotifier.Playground", "GoLive.Generator.PropertyChangedNotifier.Playground\GoLive.Generator.PropertyChangedNotifier.Playground.csproj", "{9903E07E-89A7-4350-8850-4494E9AE508C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoLive.Generator.Saturn", "GoLive.Generator.Saturn\GoLive.Generator.Saturn.csproj", "{ADDCFE2D-4EA5-4B86-A3CE-9CCA7F97B210}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{9903E07E-89A7-4350-8850-4494E9AE508C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9903E07E-89A7-4350-8850-4494E9AE508C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9903E07E-89A7-4350-8850-4494E9AE508C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADDCFE2D-4EA5-4B86-A3CE-9CCA7F97B210}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADDCFE2D-4EA5-4B86-A3CE-9CCA7F97B210}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADDCFE2D-4EA5-4B86-A3CE-9CCA7F97B210}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADDCFE2D-4EA5-4B86-A3CE-9CCA7F97B210}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

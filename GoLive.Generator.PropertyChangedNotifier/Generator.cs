@@ -30,6 +30,15 @@ namespace GoLive.Generator.PropertyChangedNotifier
             try
             {
                 var compilation = context.Compilation;
+                
+                if (config.AdditionalFilesLocation is not null)
+                {
+                    File.WriteAllText(config.AdditionalFilesLocation, OutputAdditionalFiles(config));
+                }
+                else
+                {
+                    context.AddSource("AdditionalFiles.cs", OutputAdditionalFiles(config));
+                }
 
                 var classesToGen = compilation.SyntaxTrees.Select(t => compilation.GetSemanticModel(t))
                     .Select(e => Scanner.ScanForEligibleClasses(e, config, context))
@@ -47,14 +56,7 @@ namespace GoLive.Generator.PropertyChangedNotifier
                     }
                 }
 
-                if (config.AdditionalFilesLocation is not null)
-                {
-                    File.WriteAllText(config.AdditionalFilesLocation, OutputAdditionalFiles(config));
-                }
-                else
-                {
-                    context.AddSource("AdditionalFiles.cs", OutputAdditionalFiles(config));
-                }
+
             }
             catch (Exception e)
             {
@@ -92,7 +94,7 @@ using System.ComponentModel;");
 
             if (!string.IsNullOrWhiteSpace(config.AdditionalFilesLocation))
             {
-                config.AdditionalFilesLocation.MakeFullyQualified(configFilePath);
+                config.AdditionalFilesLocation = config.AdditionalFilesLocation.MakeFullyQualified(configFilePath);
             }
 
             if (string.IsNullOrWhiteSpace(config.AdditionalFilesNamespace))

@@ -1,5 +1,6 @@
-﻿   
 using System;
+
+namespace GoLive.Generator.Saturn.Resources;
 
 public static class DictionaryExt
 {

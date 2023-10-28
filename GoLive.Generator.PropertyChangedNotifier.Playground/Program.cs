@@ -13,22 +13,19 @@ public class Program
                 item.AnotherString = new ObservableList<string>();*/
                 /*item.Strings.CollectionChanged += (in NotifyCollectionChangedEventArgs<string> eventArgs) => item.Changes.Upsert($"Strings.{eventArgs.NewStartingIndex}", eventArgs.NewItems);*/
                 
-                item.Name = "init name value";
+                /*item.Name = "init name value";
                 item.Description = "init desc value";
                 item.AnotherString = new();
                 item.AnotherString.Add("Wibble 1");
                 item.Id = DateTime.UtcNow.ToString("O");
                 item.EnableChangeTracking = true;
                 item.Changes.Clear();
-                FourthItem fi = new FourthItem();
+                
+                
+                var fi = new FourthItem();
                 fi.EnableChangeTracking = true;
                 fi.MainItem = item;
-                
-                
-
-               // item.Strings = new();
                 item.Strings.Add("strings 1");
-
                 fi.MainItem = null;
                 
 
@@ -37,10 +34,10 @@ public class Program
                 item.AnotherString.Insert(0, "Wibble 3");
                 item.Strings.Add("string 2");
                 item.Strings[0] = "overwritten";
-                Console.WriteLine();
+                Console.WriteLine();*/
         }
 }
-public class PrimativeWrapper<T> : INotifyPropertyChanged
+/*public class PrimativeWrapper<T> : INotifyPropertyChanged
 {
         private T primitive;
         public PrimativeWrapper() { }
@@ -97,7 +94,7 @@ public static class PrimativeWrapperExtensions
                         yield return new PrimativeWrapper<T>(item);
                 }
         }
-}
+}*/
 /*
 public class StringContainer : INotifyPropertyChanged
 {

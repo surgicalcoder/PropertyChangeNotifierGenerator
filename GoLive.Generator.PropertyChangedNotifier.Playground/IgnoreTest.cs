@@ -1,4 +1,4 @@
-﻿using GoLive.Generator.PropertyChangedNotifier.Utilities;
+﻿using GoLive.Generator.Saturn.Resources;
 using GoLive.Saturn.Data.Entities;
 
 namespace GoLive.Generator.PropertyChangedNotifier.Playground
