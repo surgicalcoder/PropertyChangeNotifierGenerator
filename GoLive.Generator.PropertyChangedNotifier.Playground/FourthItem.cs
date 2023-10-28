@@ -8,6 +8,10 @@ public partial class FourthItem : MultiscopedEntity<MainItem>
     [AddToLimitedView("View1")]
     [AddToLimitedView("View2")]
     private string blarg;
+
+    [AddToLimitedView("View1", UseLimitedView = "PublicView")]
+    private FifthItem fifth;
+    
     [AddRefToScope]
     private Ref<MainItem> mainItem;
     

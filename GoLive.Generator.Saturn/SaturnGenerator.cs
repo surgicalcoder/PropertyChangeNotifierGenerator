@@ -20,6 +20,7 @@ public class SaturnGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        context.RegisterPostInitializationOutput(AddAdditionalFiles);
         var configFiles = context.AdditionalTextsProvider.Where(IsConfigurationFile);
         var config = configFiles.Collect().Select(static (t, _) => LoadConfig(t));
 
@@ -32,14 +33,17 @@ public class SaturnGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(controllersAndConfig, static (spc, source) => Execute(source.Left, source.Right, spc));
     }
 
-    private static void Execute(ImmutableArray<ClassToGenerate> classesToGenerate, ImmutableArray<AdditionalText> configurationFiles, SourceProductionContext spc)
+    private void AddAdditionalFiles(IncrementalGeneratorPostInitializationContext context)
     {
         using var reader = new StreamReader(typeof(SaturnGenerator).Assembly.GetManifestResourceStream(EmbeddedResources.Resources_AdditionalFiles_cs), Encoding.UTF8);
         {
             var additionalFileContents = reader.ReadToEnd();
-            spc.AddSource("_additionalfiles.g.cs", additionalFileContents);
+            context.AddSource("_additionalfiles.g.cs", additionalFileContents);
         }
-        
+    }
+
+    private static void Execute(ImmutableArray<ClassToGenerate> classesToGenerate, ImmutableArray<AdditionalText> configurationFiles, SourceProductionContext spc)
+    {
         foreach (var toGenerate in classesToGenerate)
         {
             var sourceStringBuilder = new SourceStringBuilder();
@@ -47,8 +51,8 @@ public class SaturnGenerator : IIncrementalGenerator
 
             if (sourceStringBuilder.ToString() is { Length: > 0 } s)
             {
-                var fileName = System.IO.Path.GetFileName(toGenerate.Filename);
-                spc.AddSource(fileName, sourceStringBuilder.ToString());
+                var fileName = System.IO.Path.GetFileNameWithoutExtension(toGenerate.Filename);
+                spc.AddSource($"{fileName}.g.cs", sourceStringBuilder.ToString());
             }
         }
     }
@@ -115,7 +119,13 @@ public class MemberToGenerate
     public bool WriteOnly { get; set; }
     public bool IsScoped { get; set; }
 
-    public List<string> LimitedViews { get; set; } = new();
+    public List<LimitedViewToGenerate> LimitedViews { get; set; } = new();
+}
+
+public class LimitedViewToGenerate
+{
+    public string Name { get; set; }
+    public string OverrideReturnTypeToUseLimitedView { get; set; }
 }
 
 public static class Scanner
@@ -205,7 +215,18 @@ public static class Scanner
             if (attr.Any(e => e.AttributeClass.ToString() == "GoLive.Generator.Saturn.Resources.AddToLimitedViewAttribute"))
             {
                 memberToGenerate.LimitedViews = attr.Where(f => f.AttributeClass.ToString() == "GoLive.Generator.Saturn.Resources.AddToLimitedViewAttribute")
-                    .SelectMany(e => e.ConstructorArguments.Where(r=>r.Value != null).Select(r => r.Value.ToString())).ToList();
+                    .Select(e =>
+                    {
+                        var retr =  new LimitedViewToGenerate();
+                        retr.Name = e.ConstructorArguments.Where(r => r.Value != null).FirstOrDefault().Value as string;
+
+                        if (e.NamedArguments.Any())
+                        {
+                            retr.OverrideReturnTypeToUseLimitedView = e.NamedArguments.Where(r => r.Key == "UseLimitedView").FirstOrDefault().Value.Value.ToString();
+                        }
+
+                        return retr;
+                    }).ToList();
             }
 
             switch (fieldSymbol.Type)

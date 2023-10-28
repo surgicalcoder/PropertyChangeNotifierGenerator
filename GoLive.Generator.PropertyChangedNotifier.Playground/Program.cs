@@ -8,6 +8,9 @@ public class Program
 
         static async Task Main(string[] args)
         {
+                FourthItem fr = new();
+                //var wibble = FourthItem_View1.Generate(fr);
+                
                 MainItem item = new MainItem();
                 /*item.Strings = new ObservableList<string>();
                 item.AnotherString = new ObservableList<string>();*/

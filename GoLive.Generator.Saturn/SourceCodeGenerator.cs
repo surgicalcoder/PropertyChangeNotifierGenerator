@@ -14,9 +14,8 @@ namespace GoLive.Generator.Saturn
             source.AppendLine("using System.Collections.Specialized;");
             source.AppendLine("using FastMember;");
 
-            source.AppendLine($"namespace {classToGen.Namespace}");
-            source.AppendOpenCurlyBracketLine();
-            source.AppendIndent();
+            source.AppendLine($"namespace {classToGen.Namespace};");
+
 
             source.AppendLine($"public partial class {classToGen.Name} : INotifyPropertyChanged {{");
             source.AppendIndent();
@@ -86,24 +85,57 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
                 }
                 
             }
-
-            foreach (var item in classToGen.Members.Where(r => r.LimitedViews.Any()).SelectMany(f => f.LimitedViews.Select(r => new { classDef = f, LimitedView = r }))
-                         .GroupBy(e => e.LimitedView))
-            {
-                source.AppendLine("// For Limited view " + item.Key + " , generating limited view with members of ");
-
-                foreach (var x1 in item)
-                {
-                    source.AppendLine("//        " + x1.classDef.Name);
-                }
-            }
-            
-
-
             source.AppendLine("}");
 
             source.DecreaseIndent();
-            source.AppendCloseCurlyBracketLine();
+            source.AppendLine();
+            source.AppendLine();
+            
+            
+            foreach (var item in classToGen.Members.Where(r => r.LimitedViews.Any()).SelectMany(f => f.LimitedViews.Select(r => new { classDef = f, LimitedView = r }))
+                         .GroupBy(e => e.LimitedView.Name))
+            {
+                source.AppendLine($"public partial class {classToGen.Name}_{item.Key}");
+                source.AppendOpenCurlyBracketLine();
+
+                foreach (var v1 in item)
+                {
+                    if (string.IsNullOrWhiteSpace(v1.LimitedView.OverrideReturnTypeToUseLimitedView))
+                    {
+                        source.AppendLine($"public {v1.classDef.Type} {v1.classDef.Name.FirstCharToUpper()} {{get;set;}}");
+                    }
+                    else
+                    {
+                        source.AppendLine($"public {v1.classDef.Type}_{v1.LimitedView.OverrideReturnTypeToUseLimitedView} {v1.classDef.Name.FirstCharToUpper()} {{get;set;}}");
+                    }
+                }
+                
+                source.AppendLine();
+                
+                source.AppendLine($"public static {classToGen.Name}_{item.Key} Generate({classToGen.Name} source)");
+                source.AppendOpenCurlyBracketLine();
+                
+                source.AppendLine($"var retr = new {classToGen.Name.FirstCharToUpper()}_{item.Key}();");
+                
+                foreach (var v1 in item)
+                {
+                    if (string.IsNullOrWhiteSpace(v1.LimitedView.OverrideReturnTypeToUseLimitedView))
+                    {
+                        source.AppendLine($"retr.{v1.classDef.Name.FirstCharToUpper()} = source.{v1.classDef.Name.FirstCharToUpper()};");
+                    }
+                    else
+                    {
+                        source.AppendLine($"retr.{v1.classDef.Name.FirstCharToUpper()} = {v1.classDef.Type}_{v1.LimitedView.OverrideReturnTypeToUseLimitedView}.Generate(source.{v1.classDef.Name.FirstCharToUpper()}); ");
+                    }
+                }
+                
+                source.AppendLine("return retr;");
+                source.AppendCloseCurlyBracketLine();
+                
+                
+                source.AppendCloseCurlyBracketLine();
+                
+            }
         }
 
         private static void GenerateCollectionMember(SourceStringBuilder source, MemberToGenerate item)

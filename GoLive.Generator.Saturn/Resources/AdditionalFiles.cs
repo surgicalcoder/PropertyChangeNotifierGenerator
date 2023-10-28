@@ -35,9 +35,10 @@ public class AddRefToScopeAttribute : Attribute { }
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
 public class AddToLimitedViewAttribute : Attribute
 {
-    public AddToLimitedViewAttribute(string Name)
+    public AddToLimitedViewAttribute(string ViewName)
     {
-        this.Name = Name;
+        this.ViewName = ViewName;
     }
-    public string Name { get; set; }
+    public string ViewName { get; set; }
+    public string UseLimitedView { get; set; }
 }
