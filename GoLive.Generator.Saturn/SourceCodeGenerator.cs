@@ -10,6 +10,7 @@ namespace GoLive.Generator.Saturn
         {
             source.AppendLine("using System.ComponentModel;");
             source.AppendLine("using System.Runtime.CompilerServices;");
+            source.AppendLine("using GoLive.Generator.Saturn.Resources;");
             /*source.AppendLine("using GoLive.Generator.PropertyChangedNotifier.Utilities;");*/
             source.AppendLine("using System.Collections.Specialized;");
             source.AppendLine("using FastMember;");
