@@ -11,7 +11,6 @@ namespace GoLive.Generator.Saturn
             source.AppendLine("using System.ComponentModel;");
             source.AppendLine("using System.Runtime.CompilerServices;");
             source.AppendLine("using GoLive.Generator.Saturn.Resources;");
-            /*source.AppendLine("using GoLive.Generator.PropertyChangedNotifier.Utilities;");*/
             source.AppendLine("using System.Collections.Specialized;");
             source.AppendLine("using FastMember;");
 
@@ -96,7 +95,7 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
             foreach (var item in classToGen.Members.Where(r => r.LimitedViews.Any()).SelectMany(f => f.LimitedViews.Select(r => new { classDef = f, LimitedView = r }))
                          .GroupBy(e => e.LimitedView.Name))
             {
-                source.AppendLine($"public partial class {classToGen.Name}_{item.Key}");
+                source.AppendLine($"public partial class {classToGen.Name}_{item.Key} : IUpdatableFrom<{classToGen.Name}> ");
                 source.AppendOpenCurlyBracketLine();
 
                 foreach (var v1 in item)
@@ -113,23 +112,28 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
                 
                 source.AppendLine();
                 
-                source.AppendLine($"public static {classToGen.Name}_{item.Key} Generate({classToGen.Name} source)");
+                source.AppendLine();
+                source.AppendLine($"public void UpdateFrom({classToGen.Name} source)");
                 source.AppendOpenCurlyBracketLine();
-                
-                source.AppendLine($"var retr = new {classToGen.Name.FirstCharToUpper()}_{item.Key}();");
-                
                 foreach (var v1 in item)
                 {
                     if (string.IsNullOrWhiteSpace(v1.LimitedView.OverrideReturnTypeToUseLimitedView))
                     {
-                        source.AppendLine($"retr.{v1.classDef.Name.FirstCharToUpper()} = source.{v1.classDef.Name.FirstCharToUpper()};");
+                        source.AppendLine($"this.{v1.classDef.Name.FirstCharToUpper()} = source.{v1.classDef.Name.FirstCharToUpper()};");
                     }
                     else
                     {
-                        source.AppendLine($"retr.{v1.classDef.Name.FirstCharToUpper()} = {v1.classDef.Type}_{v1.LimitedView.OverrideReturnTypeToUseLimitedView}.Generate(source.{v1.classDef.Name.FirstCharToUpper()}); ");
+                        source.AppendLine($"this.{v1.classDef.Name.FirstCharToUpper()} = {v1.classDef.Type}_{v1.LimitedView.OverrideReturnTypeToUseLimitedView}.Generate(source.{v1.classDef.Name.FirstCharToUpper()}); ");
                     }
                 }
+                source.AppendLine();
+                source.AppendCloseCurlyBracketLine();
                 
+                source.AppendLine($"public static {classToGen.Name}_{item.Key} Generate({classToGen.Name} source)");
+                source.AppendOpenCurlyBracketLine();
+                
+                source.AppendLine($"var retr = new {classToGen.Name.FirstCharToUpper()}_{item.Key}();");
+                source.AppendLine("retr.UpdateFrom(source);");
                 source.AppendLine("return retr;");
                 source.AppendCloseCurlyBracketLine();
                 
