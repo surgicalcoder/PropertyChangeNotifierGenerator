@@ -9,4 +9,5 @@ namespace GoLive.Generator.Saturn
         public string AdditionalFilesLocation { get; set; }
         public string AdditionalFilesNamespace { get; set; }
     }
+    
 }

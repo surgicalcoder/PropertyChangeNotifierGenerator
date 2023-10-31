@@ -218,11 +218,11 @@ public static class Scanner
                     .Select(e =>
                     {
                         var retr =  new LimitedViewToGenerate();
-                        retr.Name = e.ConstructorArguments.Where(r => r.Value != null).FirstOrDefault().Value as string;
+                        retr.Name = e.ConstructorArguments.FirstOrDefault(r => r.Value != null).Value as string;
 
                         if (e.NamedArguments.Any())
                         {
-                            retr.OverrideReturnTypeToUseLimitedView = e.NamedArguments.Where(r => r.Key == "UseLimitedView").FirstOrDefault().Value.Value.ToString();
+                            retr.OverrideReturnTypeToUseLimitedView = e.NamedArguments.FirstOrDefault(r => r.Key == "UseLimitedView").Value.Value.ToString();
                         }
 
                         return retr;
