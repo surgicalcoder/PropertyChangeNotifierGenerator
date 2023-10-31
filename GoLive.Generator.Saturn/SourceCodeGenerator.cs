@@ -51,15 +51,27 @@ namespace GoLive.Generator.Saturn
                     typeAccessorsToCreate.Add(s);
                 }
             }
+
+            bool addedRefAccessor = false;
             
             foreach (var s in typeAccessorsToCreate)
             {
+                if (s.Name == "Ref" && ((INamedTypeSymbol)s).ConstructedFrom.ToString() == "GoLive.Saturn.Data.Entities.Ref<T>")
+                {
+                    if (!addedRefAccessor)
+                    {
+                        source.AppendLine($"TypeAccessor RefTypeAccessor = TypeAccessor.Create(typeof(GoLive.Saturn.Data.Entities.Ref<>));");
+                        source.AppendLine();
+                        addedRefAccessor = true;
+                    }
+                    continue;
+                }
                 var collTargetName = s.Name.FirstCharToUpper();
                 source.AppendLine($"TypeAccessor {collTargetName}TypeAccessor = TypeAccessor.Create(typeof({s}));");
                 source.AppendLine();
             }
             
-            source.AppendLine(@"public event PropertyChangedEventHandler? PropertyChanged;
+            /*source.AppendLine(@"public event PropertyChangedEventHandler? PropertyChanged;
 
 protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
@@ -72,7 +84,7 @@ protected bool SetField<T>(ref T field, T value, [CallerMemberName] string prope
         Changes.Upsert(propertyName,value);
     }
     return true;
-}");
+}");*/
 
             foreach (var member in classToGen.Members)
             {

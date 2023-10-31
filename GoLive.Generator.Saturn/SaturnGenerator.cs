@@ -21,16 +21,27 @@ public class SaturnGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(AddAdditionalFiles);
-        var configFiles = context.AdditionalTextsProvider.Where(IsConfigurationFile);
-        var config = configFiles.Collect().Select(static (t, _) => LoadConfig(t));
 
         var classDeclarations = context.SyntaxProvider.CreateSyntaxProvider(static (s, _) => Scanner.CanBeEntity(s),
                 static (ctx, _) => GetEntityDeclarations(ctx))
             .Where(static c => c is not null)
             .Select(static (c, _) => Scanner.ConvertToMapping(c));
 
-        var controllersAndConfig = classDeclarations.Collect().Combine(configFiles.Collect());
-        context.RegisterSourceOutput(controllersAndConfig, static (spc, source) => Execute(source.Left, source.Right, spc));
+        context.RegisterSourceOutput(classDeclarations.Collect(), static (spc, source) => Execute(spc, source));
+    }
+
+    private static void Execute(SourceProductionContext spc, ImmutableArray<ClassToGenerate> classesToGenerate)
+    {
+        foreach (var toGenerate in classesToGenerate)
+        {
+            var sourceStringBuilder = new SourceStringBuilder();
+            SourceCodeGenerator.Generate(sourceStringBuilder, toGenerate);
+
+            if (sourceStringBuilder.ToString() is { Length: > 0 } s)
+            {
+                spc.AddSource($"{toGenerate.Name}.g.cs", sourceStringBuilder.ToString());
+            }
+        }
     }
 
     private void AddAdditionalFiles(IncrementalGeneratorPostInitializationContext context)
