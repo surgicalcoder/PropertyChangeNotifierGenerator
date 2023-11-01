@@ -8,7 +8,7 @@ namespace GoLive.Generator.PropertyChangedNotifier.Playground
         private string item1;
         private ObservableList<MainItem> thingsContained;
         
-        public Dictionary<string, object> Changes = new();
-        public bool EnableChangeTracking { get; set; }
+        /*public Dictionary<string, object> Changes = new();
+        public bool EnableChangeTracking { get; set; }*/
     }
 }

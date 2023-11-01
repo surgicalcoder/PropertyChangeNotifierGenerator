@@ -16,6 +16,6 @@ public partial class MainItem : Entity
 
     private string wibble3;
     
-    public Dictionary<string, object> Changes = new();
-    public bool EnableChangeTracking { get; set; }
+    /*public Dictionary<string, object> Changes = new();
+    public bool EnableChangeTracking { get; set; }*/
 }

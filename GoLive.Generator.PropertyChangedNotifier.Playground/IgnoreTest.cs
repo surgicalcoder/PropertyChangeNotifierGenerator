@@ -11,7 +11,7 @@ namespace GoLive.Generator.PropertyChangedNotifier.Playground
         private string readonlyTest;
         private string everythingElseTest;
         
-        public Dictionary<string, object> Changes = new();
-        public bool EnableChangeTracking { get; set; }
+        /*public Dictionary<string, object> Changes = new();
+        public bool EnableChangeTracking { get; set; }*/
     }
 }

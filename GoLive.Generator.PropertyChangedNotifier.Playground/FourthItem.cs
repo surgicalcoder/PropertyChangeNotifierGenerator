@@ -15,8 +15,8 @@ public partial class FourthItem : MultiscopedEntity<MainItem>
     [AddRefToScope]
     private Ref<MainItem> mainItem;
     
-    [DoNotTrackChanges]
+    /*[DoNotTrackChanges]
     public Dictionary<string, object> Changes = new();
     [DoNotTrackChanges]
-    public bool EnableChangeTracking { get; set; }
+    public bool EnableChangeTracking { get; set; }*/
 }
