@@ -107,6 +107,32 @@ public static class Scanner
                     }).ToList();
             }
 
+            if (attr.Any(r => !r.AttributeClass.ToString().StartsWith("GoLive.Generator.Saturn.Resources.")))
+            {
+                foreach (var at in attr.Where(r => !r.AttributeClass.ToString().StartsWith("GoLive.Generator.Saturn.Resources.")))
+                {
+                    MemberAttribute memAt = new();
+
+                    memAt.Name = at.AttributeClass.ToString();
+
+                    if (at.ConstructorArguments != null && at.ConstructorArguments.Length > 0)
+                    {
+                        foreach (var atConstructorArgument in at.ConstructorArguments)
+                        {
+                            memAt.ConstructorParameters.AddRange(atConstructorArgument.Values.Select(f=>f.Value?.ToString()));
+                        }
+                    }
+
+                    if (at.NamedArguments != null && at.NamedArguments.Length > 0)
+                    {
+                        memAt.NamedParameters = at.NamedArguments.Select
+                            (r => new KeyValuePair<string, string>(r.Key, r.Value.Value?.ToString())).ToList();
+                    }
+                    
+                    memberToGenerate.AdditionalAttributes.Add(memAt);
+                }
+            }
+
             switch (fieldSymbol.Type)
             {
                 case INamedTypeSymbol s2 when s2.OriginalDefinition.ToString() == "FastMember.TypeAccessor":

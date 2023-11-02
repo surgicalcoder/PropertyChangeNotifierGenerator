@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace GoLive.Generator.Saturn;
@@ -93,18 +94,23 @@ public static class SourceCodeGenerator
         foreach (var item in classToGen.Members.Where(r => r.LimitedViews.Any()).SelectMany(f => f.LimitedViews.Select(r => new { classDef = f, LimitedView = r }))
                      .GroupBy(e => e.LimitedView.Name))
         {
+            
             source.AppendLine($"public partial class {classToGen.Name}_{item.Key} : IUpdatableFrom<{classToGen.Name}> ");
             source.AppendOpenCurlyBracketLine();
 
             foreach (var v1 in item)
             {
+                var classDef = v1.classDef;
+
+                outputAttributes(source, classDef);
+                
                 if (string.IsNullOrWhiteSpace(v1.LimitedView.OverrideReturnTypeToUseLimitedView))
                 {
-                    source.AppendLine($"public {v1.classDef.Type} {v1.classDef.Name.FirstCharToUpper()} {{get;set;}}");
+                    source.AppendLine($"public {classDef.Type} {classDef.Name.FirstCharToUpper()} {{get;set;}}");
                 }
                 else
                 {
-                    source.AppendLine($"public {v1.classDef.Type}_{v1.LimitedView.OverrideReturnTypeToUseLimitedView} {v1.classDef.Name.FirstCharToUpper()} {{get;set;}}");
+                    source.AppendLine($"public {classDef.Type}_{v1.LimitedView.OverrideReturnTypeToUseLimitedView} {classDef.Name.FirstCharToUpper()} {{get;set;}}");
                 }
             }
                 
@@ -141,6 +147,38 @@ public static class SourceCodeGenerator
         }
     }
 
+    private static void outputAttributes(SourceStringBuilder source, MemberToGenerate classDef)
+    {
+        if (classDef.AdditionalAttributes.Count > 0)
+        {
+            foreach (var attr in classDef.AdditionalAttributes)
+            {
+                var builder = new StringBuilder();
+                builder.Append($"[{attr.Name}(");
+
+                if (attr.ConstructorParameters.Count > 0)
+                {
+                    foreach (var attrConstructorParameter in attr.ConstructorParameters)
+                    {
+                        builder.Append($"{attrConstructorParameter},");
+                    }
+                }
+
+                if (attr.NamedParameters.Count > 0)
+                {
+                    foreach (var attrNamedParameter in attr.NamedParameters)
+                    {
+                        builder.Append($"{attrNamedParameter.Key}={attrNamedParameter.Value},");
+                    }
+                }
+
+                builder.AppendLine(")]");
+                
+                source.AppendLine(builder.ToString().Replace(",)]", ")]")); // TODO need to fix
+            }
+        }
+    }
+
     private static void GenerateCollectionMember(SourceStringBuilder source, MemberToGenerate item)
     {
         var itemName = item.Name;
@@ -154,6 +192,7 @@ public static class SourceCodeGenerator
     private static void GenerateNormalMember(SourceStringBuilder source, MemberToGenerate item)
     {
         var itemName = item.Name;
+        outputAttributes(source, item);
         source.AppendLine($"public {item.Type} {itemName.FirstCharToUpper()}");
         source.AppendOpenCurlyBracketLine();
             

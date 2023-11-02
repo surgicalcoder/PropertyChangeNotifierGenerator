@@ -21,4 +21,13 @@ public class MemberToGenerate
     public bool IsScoped { get; set; }
 
     public List<LimitedViewToGenerate> LimitedViews { get; set; } = new();
+
+    public List<MemberAttribute> AdditionalAttributes { get; set; } = new();
+}
+
+public class MemberAttribute
+{
+    public string Name { get; set; }
+    public List<string> ConstructorParameters { get; set; } = new();
+    public List<KeyValuePair<string, string>> NamedParameters { get; set; }= new();
 }
