@@ -1,4 +1,5 @@
-﻿using GoLive.Generator.Saturn.Resources;
+﻿using System.Text.Json.Serialization;
+using GoLive.Generator.Saturn.Resources;
 using GoLive.Saturn.Data.Entities;
 
 namespace GoLive.Generator.PropertyChangedNotifier.Playground
